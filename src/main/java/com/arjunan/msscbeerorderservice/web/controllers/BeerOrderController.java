@@ -41,4 +41,9 @@ public class BeerOrderController {
     public ResponseEntity<BeerOrderDTO> placeOrder(@PathVariable("customerId") UUID customerId, @RequestBody BeerOrderDTO beerOrderDTO){
         return new ResponseEntity<BeerOrderDTO>(beerOrderService.placeOrder(customerId, beerOrderDTO),HttpStatus.CREATED);
     }
+
+    @GetMapping("orders/{orderId}")
+    public ResponseEntity<BeerOrderDTO> getOrder(@PathVariable("customerId") UUID customerId, @PathVariable("orderId") UUID orderId){
+        return new ResponseEntity<BeerOrderDTO>(beerOrderService.getOrderById(customerId,orderId),HttpStatus.OK);
+    }
 }

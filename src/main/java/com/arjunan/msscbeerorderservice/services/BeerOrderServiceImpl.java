@@ -79,4 +79,23 @@ public class BeerOrderServiceImpl implements  BeerOrderService{
         }
         return null;
     }
+
+    @Override
+    public BeerOrderDTO getOrderById(UUID customerId, UUID orderId) {
+        Optional<Customer> customerOptional = customerRepository.findById(customerId);
+
+        if(customerOptional.isPresent()){
+            Optional<BeerOrder> beerOrderOptional = beerOrderRepository.findById(orderId);
+
+            if(beerOrderOptional.isPresent()){
+                BeerOrder beerOrder = beerOrderOptional.get();
+
+                if(beerOrder.getCustomer().getId().equals(customerId)){
+                    return beerOrderMapper.beerOrderToBeerOrderDto(beerOrder);
+                }
+            }
+        }
+
+        return null;
+    }
 }
