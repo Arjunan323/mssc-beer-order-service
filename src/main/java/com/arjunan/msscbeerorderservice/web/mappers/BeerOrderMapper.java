@@ -9,7 +9,7 @@ import org.mapstruct.Mapping;
 public interface BeerOrderMapper {
 
     @Mapping(target = "customerId", ignore = true)
-    BeerOrderDTO beerOderToBeerOrderDto(BeerOrder beerOrder);
+    BeerOrderDTO beerOrderToBeerOrderDto(BeerOrder beerOrder);
 
     @Mapping(target = "customer", ignore = true)
     BeerOrder beerOrderDtoToBeerOrder(BeerOrderDTO beerOrderDTO);
