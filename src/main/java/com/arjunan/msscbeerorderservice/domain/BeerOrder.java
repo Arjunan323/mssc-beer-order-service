@@ -24,12 +24,12 @@ public class BeerOrder extends  BaseEntity {
 
     @Builder
     public BeerOrder(UUID id, Long version, Timestamp createdDate, Timestamp lastModifiedDate, String customerRef,
-                     Customer customer, Set<BeerOrderLine> beerOrderLines, OrderStatusEnum orderStatusEnum, String orderStatusCallBackUrl) {
+                     Customer customer, Set<BeerOrderLine> beerOrderLines, OrderStatusEnum orderStatus, String orderStatusCallBackUrl) {
         super(id, version, createdDate, lastModifiedDate);
         this.customerRef = customerRef;
         this.customer = customer;
         this.beerOrderLines = beerOrderLines;
-        this.orderStatusEnum = orderStatusEnum;
+        this.orderStatus = orderStatus;
         this.orderStatusCallBackUrl = orderStatusCallBackUrl;
     }
 
@@ -42,7 +42,7 @@ public class BeerOrder extends  BaseEntity {
     @Fetch(FetchMode.JOIN) //TODO Need to check internal logic
     private Set<BeerOrderLine> beerOrderLines;
 
-    private OrderStatusEnum orderStatusEnum = OrderStatusEnum.NEW;
+    private OrderStatusEnum orderStatus = OrderStatusEnum.NEW;
 
     private String orderStatusCallBackUrl;
 
