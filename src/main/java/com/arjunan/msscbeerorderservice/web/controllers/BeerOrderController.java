@@ -2,14 +2,12 @@ package com.arjunan.msscbeerorderservice.web.controllers;
 
 import com.arjunan.msscbeerorderservice.constants.CommonConstant;
 import com.arjunan.msscbeerorderservice.services.BeerOrderService;
+import com.arjunan.msscbeerorderservice.web.model.BeerOrderDTO;
 import com.arjunan.msscbeerorderservice.web.model.BeerOrderPagedList;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -23,7 +21,7 @@ public class BeerOrderController {
         this.beerOrderService = beerOrderService;
     }
 
-
+    @GetMapping("orders")
     public ResponseEntity<BeerOrderPagedList> listOrders(@PathVariable("customerId")UUID customerId ,
                                                          @RequestParam(value = "pageNumber", required = false) Integer pageNumber,
                                                          @RequestParam(value = "pageSize" , required = false) Integer pageSize){
@@ -36,5 +34,11 @@ public class BeerOrderController {
         BeerOrderPagedList orderPagedList =   beerOrderService.listOrder(customerId , PageRequest.of(pageNumber,pageSize));
 
         return new ResponseEntity<>(orderPagedList, HttpStatus.OK);
+    }
+
+    @PostMapping("orders")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<BeerOrderDTO> placeOrder(@PathVariable("customerId") UUID customerId, @RequestBody BeerOrderDTO beerOrderDTO){
+        return new ResponseEntity<BeerOrderDTO>(beerOrderService.placeOrder(customerId, beerOrderDTO),HttpStatus.CREATED);
     }
 }

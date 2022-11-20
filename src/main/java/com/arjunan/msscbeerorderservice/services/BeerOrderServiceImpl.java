@@ -2,19 +2,24 @@ package com.arjunan.msscbeerorderservice.services;
 
 import com.arjunan.msscbeerorderservice.domain.BeerOrder;
 import com.arjunan.msscbeerorderservice.domain.Customer;
+import com.arjunan.msscbeerorderservice.enums.OrderStatusEnum;
 import com.arjunan.msscbeerorderservice.respository.BeerOrderRepository;
 import com.arjunan.msscbeerorderservice.respository.CustomerRepository;
 import com.arjunan.msscbeerorderservice.web.mappers.BeerOrderMapper;
+import com.arjunan.msscbeerorderservice.web.model.BeerOrderDTO;
 import com.arjunan.msscbeerorderservice.web.model.BeerOrderPagedList;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class BeerOrderServiceImpl implements  BeerOrderService{
 
@@ -49,6 +54,29 @@ public class BeerOrderServiceImpl implements  BeerOrderService{
 
         }
 
+        return null;
+    }
+
+    @Transactional
+    @Override
+    public BeerOrderDTO placeOrder(UUID customerId, BeerOrderDTO beerOrderDTO) {
+        Optional<Customer> customerOptional = customerRepository.findById(customerId);
+
+        if(customerOptional.isPresent()){
+            BeerOrder beerOrder = beerOrderMapper.beerOrderDtoToBeerOrder(beerOrderDTO);
+            beerOrder.setId(null);
+            beerOrder.setCustomer(customerOptional.get());
+            beerOrder.setOrderStatus(OrderStatusEnum.NEW);
+
+            beerOrder.getBeerOrderLines().forEach(beerOrderLine -> beerOrderLine.setBeerOrder(beerOrder));
+
+            BeerOrder savedBeer = beerOrderRepository.saveAndFlush(beerOrder);
+
+            log.debug("Saved Beer Order: "+ savedBeer.getId());
+
+            return beerOrderMapper.beerOrderToBeerOrderDto(savedBeer);
+
+        }
         return null;
     }
 }

@@ -1,5 +1,6 @@
 package com.arjunan.msscbeerorderservice.services;
 
+import com.arjunan.msscbeerorderservice.web.model.BeerOrderDTO;
 import com.arjunan.msscbeerorderservice.web.model.BeerOrderPagedList;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -10,4 +11,6 @@ import java.util.UUID;
 
 public interface BeerOrderService {
     BeerOrderPagedList listOrder(UUID customerId, Pageable pageable);
+
+    BeerOrderDTO placeOrder(UUID customerId, BeerOrderDTO beerOrderDTO);
 }
