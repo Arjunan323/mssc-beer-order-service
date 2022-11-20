@@ -82,6 +82,19 @@ public class BeerOrderServiceImpl implements  BeerOrderService{
 
     @Override
     public BeerOrderDTO getOrderById(UUID customerId, UUID orderId) {
+        return beerOrderMapper.beerOrderToBeerOrderDto(getBeerOrder(customerId,orderId));
+    }
+
+    @Override
+    public void pickupOrder(UUID customerId, UUID orderId) {
+        BeerOrder beerOrder = getBeerOrder(customerId, orderId);
+        if (beerOrder == null) throw new AssertionError();
+        beerOrder.setOrderStatus(OrderStatusEnum.PICK_UP);
+        beerOrderRepository.save(beerOrder);
+    }
+
+
+    private BeerOrder getBeerOrder(UUID customerId, UUID orderId){
         Optional<Customer> customerOptional = customerRepository.findById(customerId);
 
         if(customerOptional.isPresent()){
@@ -91,11 +104,10 @@ public class BeerOrderServiceImpl implements  BeerOrderService{
                 BeerOrder beerOrder = beerOrderOptional.get();
 
                 if(beerOrder.getCustomer().getId().equals(customerId)){
-                    return beerOrderMapper.beerOrderToBeerOrderDto(beerOrder);
+                    return beerOrder;
                 }
             }
         }
-
         return null;
     }
 }
