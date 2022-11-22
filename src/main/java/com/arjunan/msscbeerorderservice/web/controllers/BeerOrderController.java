@@ -22,7 +22,7 @@ public class BeerOrderController {
     }
 
     @GetMapping("orders")
-    public ResponseEntity<BeerOrderPagedList> listOrders(@PathVariable("customerId")UUID customerId ,
+    public ResponseEntity<BeerOrderPagedList<BeerOrderDTO>> listOrders(@PathVariable("customerId")UUID customerId ,
                                                          @RequestParam(value = "pageNumber", required = false) Integer pageNumber,
                                                          @RequestParam(value = "pageSize" , required = false) Integer pageSize){
         if(pageNumber == null || pageNumber < 0)
@@ -31,7 +31,7 @@ public class BeerOrderController {
         if(pageSize == null || pageSize < 1)
             pageSize = CommonConstant.DEFAULT_PAGE_SIZE;
 
-        BeerOrderPagedList orderPagedList =   beerOrderService.listOrder(customerId , PageRequest.of(pageNumber,pageSize));
+        BeerOrderPagedList<BeerOrderDTO> orderPagedList =   beerOrderService.listOrder(customerId , PageRequest.of(pageNumber,pageSize));
 
         return new ResponseEntity<>(orderPagedList, HttpStatus.OK);
     }

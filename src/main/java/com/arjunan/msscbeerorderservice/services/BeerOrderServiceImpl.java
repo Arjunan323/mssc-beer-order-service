@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -34,14 +35,14 @@ public class BeerOrderServiceImpl implements  BeerOrderService{
     }
 
     @Override
-    public BeerOrderPagedList listOrder(UUID customerId, Pageable pageable) {
+    public BeerOrderPagedList<BeerOrderDTO> listOrder(UUID customerId, Pageable pageable) {
 
         Optional<Customer> customer = customerRepository.findById(customerId);
 
         if(customer.isPresent()){
             Page<BeerOrder> allByCustomer = beerOrderRepository.findAllByCustomer(customer.get(), pageable);
 
-            return new BeerOrderPagedList(allByCustomer
+            return new BeerOrderPagedList<>(allByCustomer
                     .stream()
                     .map(beerOrderMapper::beerOrderToBeerOrderDto)
                     .collect(Collectors.toList()),
