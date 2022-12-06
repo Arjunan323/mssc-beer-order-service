@@ -2,10 +2,12 @@ package com.arjunan.msscbeerorderservice.web.mappers;
 
 import com.arjunan.msscbeerorderservice.domain.BeerOrderLine;
 import com.arjunan.msscbeerorderservice.web.model.BeerOrderLineDTO;
+import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(uses = {DateMapper.class})
+@DecoratedWith(value = BeerOrderLineMapperDecorator.class)
 public interface BeerOrderLineMapper {
 
     @Mapping(target = "upc", ignore = true)

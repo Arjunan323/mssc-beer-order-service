@@ -2,12 +2,14 @@ package com.arjunan.msscbeerorderservice.bootstrap;
 
 import com.arjunan.msscbeerorderservice.domain.Customer;
 import com.arjunan.msscbeerorderservice.respository.CustomerRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
 @Component
+@Slf4j
 public class BeerOrderBootstrap implements CommandLineRunner {
 
 
@@ -28,11 +30,13 @@ public class BeerOrderBootstrap implements CommandLineRunner {
     }
 
     private void loadCustomerData() {
-        if (customerRepository.count() == 0) {
-            customerRepository.save(Customer.builder()
+        if (customerRepository.findAllByCustomerNameLike(BeerOrderBootstrap.TASTING_ROOM).size() == 0) {
+            Customer save = customerRepository.save(Customer.builder()
                     .customerName(TASTING_ROOM)
                     .apiKey(UUID.randomUUID())
                     .build());
+
+            log.info("Tasting Room Customer Id : {} ", save.getId());
         }
     }
 }

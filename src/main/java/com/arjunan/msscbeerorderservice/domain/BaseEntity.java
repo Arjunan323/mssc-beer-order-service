@@ -5,11 +5,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.UUID;
 
@@ -29,10 +28,9 @@ public class BaseEntity {
 
     @Id
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID",
-    strategy = "org.hibernate.id.UUIDGenerator"
-    )
-    @Column(length = 36, columnDefinition = "varchar" , updatable = false, insertable = false)
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(length = 36 , columnDefinition = "varchar", updatable = false, insertable = false)
+    @Type(type="org.hibernate.type.UUIDCharType")
     private UUID id;
 
     @Version

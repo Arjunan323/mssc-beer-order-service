@@ -21,7 +21,7 @@ public class BeerOrderController {
         this.beerOrderService = beerOrderService;
     }
 
-    @GetMapping("orders")
+    @GetMapping("/orders")
     public ResponseEntity<BeerOrderPagedList<BeerOrderDTO>> listOrders(@PathVariable("customerId")UUID customerId ,
                                                          @RequestParam(value = "pageNumber", required = false) Integer pageNumber,
                                                          @RequestParam(value = "pageSize" , required = false) Integer pageSize){
@@ -36,13 +36,13 @@ public class BeerOrderController {
         return new ResponseEntity<>(orderPagedList, HttpStatus.OK);
     }
 
-    @PostMapping("orders")
+    @PostMapping("/orders")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<BeerOrderDTO> placeOrder(@PathVariable("customerId") UUID customerId, @RequestBody BeerOrderDTO beerOrderDTO){
         return new ResponseEntity<BeerOrderDTO>(beerOrderService.placeOrder(customerId, beerOrderDTO),HttpStatus.CREATED);
     }
 
-    @GetMapping("orders/{orderId}")
+    @GetMapping("/orders/{orderId}")
     public ResponseEntity<BeerOrderDTO> getOrder(@PathVariable("customerId") UUID customerId, @PathVariable("orderId") UUID orderId){
         return new ResponseEntity<BeerOrderDTO>(beerOrderService.getOrderById(customerId,orderId),HttpStatus.OK);
     }
